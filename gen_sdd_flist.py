@@ -73,11 +73,11 @@ with open(GSF_CSV) as source, open(SDD_RPT, 'w') as dest:
     
     for index, row in df_filtered_sdd.iterrows():
         rf, fault_site, slack = row['RF'], row['site'], row['slack']
-        # '*' in gsf means INFINITY. Hence, use the default value since it'll be probably untestable #
+        # '*' in gsf means INFINITY. Hence, use a full clock period of delay. #
         if slack != '*':
             print(f"\t NA {rf} ({(CLK_NS - float(slack)) * K:.2f}ns) {{PORT \"{fault_site}\"}}", file=dest) 
-        else: 
-            print(f"\t NA {rf} {{PORT \"{fault_site}\"}}", file=dest)
+        else:
+            print(f"\t NA {rf} ({CLK_NS}ns) {{PORT \"{fault_site}\"}}", file=dest) 
 
     print("}", file=dest)
     
