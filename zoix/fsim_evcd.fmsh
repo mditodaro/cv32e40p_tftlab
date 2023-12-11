@@ -10,7 +10,7 @@ set(var=[fsim],hyperfault=[0])
 
 design()
 
-addtst(test=[riscv_core], 
+addtst(test=[cv32e40p_top], 
 stimtype=[vcd],
 stim=[$VCD],
 dut.stim=[cv32e40p_top_COREV_PULP0_COREV_CLUSTER0_FPU0_FPU_ADDMUL_LAT0_FPU_OTHERS_LAT0_ZFINX0_NUM_MHPMCOUNTERS1, tb_top.wrapper_i.top_i], 
