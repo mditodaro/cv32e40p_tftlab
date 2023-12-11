@@ -10,7 +10,6 @@ TOP_LEVEL     = cv32e40p_top_COREV_PULP0_COREV_CLUSTER0_FPU0_FPU_ADDMUL_LAT0_FPU
 TB_CLK_NS     = 10.0
 K             = 0
 FAULT_LIST    = 0
-LSIM_TYPE     = functional
 
 # --- Flags taken from example_tb/core/Makefile -------------
 
@@ -61,19 +60,21 @@ RISCV_EXE_PREFIX       = $(RISCV)/bin/riscv32-unknown-elf-
 
 help::
 	@printf "\033[1mSynthesis\033[0m\n"
-	@printf "\033[31m\tsynthesis/nangate45\033[39m Invokes Synopsys Design Compiler to synthesize the RI5CY using nangate45 as tech lib\n"
-	@printf "\033[31m\tsynthesis/nangate45/scan_insertion \033[39m Invokes Synopsys Design Compiler to insert scan chains in RI5CY (assuming Nangate as tech lib)\n"
+	@printf "\033[31m\tsynthesis/nangate45\033[39m Invokes Synopsys Design Compiler to synthesize the CV32E40P using nangate45 as tech lib\n"
+	@printf "\033[31m\tsynthesis/nangate45/scan_insertion \033[39m Invokes Synopsys Design Compiler to insert scan chains in CV32E40P (assuming Nangate as tech lib)\n"
 	@printf "\033[1mStatic Timing Analysis\033[0m\n"
-	@printf "\033[31m\tpt/generate_gsf\033[39m Invokes Synopsys Prime Time to generate a Global Slack File for the gate-level of RI5CY\n"
+	@printf "\033[31m\tpt/generate_gsf\033[39m Invokes Synopsys Prime Time to generate a Global Slack File for the gate-level of CV32E40P\n"
 	@printf "\033[1mCross Compile\033[0m\n"
-	@printf "\033[31m\tcompile_sbst\033[39m Cross-Compiles your STL for the RI5CY RISC-V ISA.\n"
+	@printf "\033[31m\tcompile_sbst\033[39m Cross-Compiles your STL for the CV32E40P RISC-V ISA.\n"
 	@printf "\033[1mLogic Simulation\033[0m\n"
-	@printf "\033[31m\tquesta/lsim/compile/functional\033[39m Invokes Siemens QuestaSIM to compile RI5CY RT-level and Gate-level descriptions for functional logic simulation\n"
-	@printf "\033[31m\tquesta/lsim/compile/timing\033[39m Invokes Siemens QuestaSIM to compile RI5CY RT-level and Gate-level descriptions for timing logic simulation\n"
-	@printf "\033[31m\tquesta/lsim/rtl/shell [LSIM_TYPE=functional|timing]\033[39m Invokes QuestaSIM to perform an RT-level simulation of the sbst in shell mode. By default, launches functional simulation.\n"
-	@printf "\033[31m\tquesta/lsim/rtl/gui [LSIM_TYPE=functional|timing]\033[39m Invokes QuestaSIM to perform an RT-level simulation of the sbst in gui mode. By default, launches functional simulation.\n"
-	@printf "\033[31m\tquesta/lsim/gate/shell [LSIM_TYPE=functional|timing]\033[39m Invokes QuestaSIM to perform an Gate-level simulation of the sbst in shell mode. By default, launches functional simulation.\n"
-	@printf "\033[31m\tquesta/lsim/gate/gui [LSIM_TYPE=functional|timing]\033[39m Invokes QuestaSIM to perform an Gate-level simulation of the sbst in gui mode. By default, launches functional simulation.\n"
+	@printf "\033[31m\tquesta/lsim/compile/functional\033[39m Invokes Siemens QuestaSIM to compile CV32E40P RT-level and Gate-level descriptions for functional logic simulation\n"
+	@printf "\033[31m\tquesta/lsim/compile/timing\033[39m Invokes Siemens QuestaSIM to compile CV32E40P RT-level and Gate-level descriptions for timing logic simulation\n"
+	@printf "\033[31m\tquesta/lsim/rtl/shell\033[39m Invokes QuestaSIM to perform an RT-level simulation of the sbst in shell mode.\n"
+	@printf "\033[31m\tquesta/lsim/rtl/gui\033[39m Invokes QuestaSIM to perform an RT-level simulation of the sbst in gui mode.\n"
+	@printf "\033[31m\tquesta/lsim/gate/shell\033[39m Invokes QuestaSIM to perform a Gate-level functional simulation of the sbst in shell mode.\n"
+	@printf "\033[31m\tquesta/lsim/gate/gui\033[39m Invokes QuestaSIM to perform a Gate-level functional simulation of the sbst in gui mode.\n"
+	@printf "\033[31m\tquesta/lsim/gate-timing/shell\033[39m Invokes QuestaSIM to perform a Gate-level timing simulation of the sbst in shell mode.\n"
+	@printf "\033[31m\tquesta/lsim/gate-timing/gui\033[39m Invokes QuestaSIM to perform a Gate-level timing simulation of the sbst in gui mode.\n"
 	@printf "\033[1mFault Simulation\033[0m\n"
 	@printf "\033[31m\tzoix/compile/functional\033[39m Compiles sources for Z01X usage in functional mode.\n"
 	@printf "\033[31m\tzoix/compile/timing\033[39m Compiles sources for Z01X usage with delay information (.sdf).\n"
@@ -81,7 +82,7 @@ help::
 	@printf "\033[31m\tzoix/fgen/saf\033[39m Generates SAF fault list in SFF for Z01X.\n"
 	@printf "\033[31m\tzoix/fgen/sdd K=...\033[39m Generates SDD (Small Delay Defects) fault list in SFF for Z01X for a delay multiplier K (float)\n"
 	@printf "\033[31m\tzoix/lsim\033[39m Logic simulation to validate eVCD stimuli.\n"
-	@printf "\033[31m\tzoix/fsim FAULT_LIST=...\033[39m Fault simulation of RI5CY for FAULT_LIST.\n"
+	@printf "\033[31m\tzoix/fsim FAULT_LIST=...\033[39m Fault simulation of CV32E40P for FAULT_LIST.\n"
 	@printf "\033[1mOther\033[0m\n"
 	@printf "\033[31m\tclean\033[39m Cleans all run/ dirs and sbst/.\n"
 	@printf "\033[31m\ttarball\033[39m Cleans all run/ dirs and sbst/ and generates a tarball.\n"
@@ -104,10 +105,7 @@ $(CURDIR)/run/questasim:
 questa/%: RUN_DIR    = $(CURDIR)/run/questasim
 questa/%: export TOP = $(TOP_LEVEL)
 
-.questa-compile: $(CURDIR)/run/questasim
-
-	$(eval VWORK_GATE := $(addsuffix _gate, $(VWORK)))
-	$(eval VWORK_RTL  := $(addsuffix  _rtl, $(VWORK)))
+.questa-compile-gate: $(CURDIR)/run/questasim
 
 	cd $(RUN_DIR); $(VLIB) $(VWORK_GATE)
 
@@ -137,22 +135,24 @@ questa/%: export TOP = $(TOP_LEVEL)
 		$(VOPT_FLAGS) $(VOPT_SDF)                                    \
 		$(RTLSRC_VLOG_TB_TOP) -o $(RTLSRC_VOPT_TB_TOP)     
 
-	cd $(RUN_DIR); $(VLIB) $(VWORK_RTL)
+.questa-compile-rtl: $(CURDIR)/run/questasim
 
-	cd $(RUN_DIR); $(VLOG) -work $(VWORK_RTL) $(VLOG_FLAGS)          \
+	cd $(RUN_DIR); $(VLIB) work_rtl
+
+	cd $(RUN_DIR); $(VLOG) -work work_rtl $(VLOG_FLAGS)          \
 		-f $(CV_CORE_MANIFEST) $(RTLSRC_TB_PKG) $(RTLSRC_TB)
 
-	cd $(RUN_DIR); $(VOPT) -work $(VWORK_RTL)  $(VOPT_FLAGS)         \
+	cd $(RUN_DIR); $(VOPT) -work work_rtl  $(VOPT_FLAGS)         \
 		$(RTLSRC_VLOG_TB_TOP) -o $(RTLSRC_VOPT_TB_TOP)
 
 
 questa/compile/functional: DEFINE_FUNCTIONAL = +define+functional
-questa/compile/functional: VWORK             = work_functional
-questa/compile/functional: .questa-compile
+questa/compile/functional: VWORK_GATE         = work_gate
+questa/compile/functional: .questa-compile-rtl .questa-compile-gate
 
-questa/compile/timing: VOPT_SDF = -sdftyp $(SDF_TOP)=$(SDF)
-questa/compile/timing: VWORK    = work_timing
-questa/compile/timing: .questa-compile
+questa/compile/timing: VOPT_SDF   = -sdftyp $(SDF_TOP)=$(SDF)
+questa/compile/timing: VWORK_GATE = work_gate_timing
+questa/compile/timing: .questa-compile-rtl .questa-compile-gate
 
 .questa-lsim: $(CURDIR)/run/questasim
 	cd $(RUN_DIR); $(VSIM) -c            \
@@ -173,24 +173,33 @@ questa/compile/timing: .questa-compile
 
 questa/lsim/rtl/shell: export RUN_GUI  = 0
 questa/lsim/rtl/shell: export RUN_GATE = 0
-questa/lsim/rtl/shell: VWORK           = work_$(LSIM_TYPE)_rtl
+questa/lsim/rtl/shell: VWORK           = work_rtl
 questa/lsim/rtl/shell: .questa-lsim
 
 questa/lsim/gate/shell: export RUN_GUI  = 0
 questa/lsim/gate/shell: export RUN_GATE = 1
-questa/lsim/gate/shell: VWORK           = work_$(LSIM_TYPE)_gate
+questa/lsim/gate/shell: VWORK           = work_gate
 questa/lsim/gate/shell: .questa-lsim
+
+questa/lsim/gate-timing/shell: export RUN_GUI  = 0
+questa/lsim/gate-timing/shell: export RUN_GATE = 1
+questa/lsim/gate-timing/shell: VWORK           = work_gate_timing
+questa/lsim/gate-timing/shell: .questa-lsim
 
 questa/lsim/rtl/gui: export RUN_GUI  = 1
 questa/lsim/rtl/gui: export RUN_GATE = 0
-questa/lsim/rtl/gui: VWORK           = work_$(LSIM_TYPE)_gate
+questa/lsim/rtl/gui: VWORK           = work_rtl
 questa/lsim/rtl/gui: .questa-lsim-gui
 
 questa/lsim/gate/gui: export RUN_GUI  = 1
 questa/lsim/gate/gui: export RUN_GATE = 1
-questa/lsim/gate/gui: VWORK           = work_$(LSIM_TYPE)_gate
+questa/lsim/gate/gui: VWORK           = work_gate
 questa/lsim/gate/gui: .questa-lsim-gui
 
+questa/lsim/gate-timing/gui: export RUN_GUI  = 1
+questa/lsim/gate-timing/gui: export RUN_GATE = 1
+questa/lsim/gate-timing/gui: VWORK           = work_gate_timing
+questa/lsim/gate-timing/gui: .questa-lsim-gui
 
 
 
@@ -226,47 +235,15 @@ pt/generate_gsf: $(GATE_DIR)/cv32e40p_top.gsf
 $(CURDIR)/run/zoix:
 	mkdir -pv $@
 
-zoix/%: RUN_DIR = $(CURDIR)/run/zoix
+$(CURDIR)/run/zoix_timing:
+	mkdir -pv $@
 
-.zoix-fgen: $(CURDIR)/run/zoix
-	cd $(RUN_DIR); \
-	fr2fdef \
-		+format+standard +verbose +warnreturn+0 +nocollapse \
-		+dut+$(TOP_LEVEL) \
-		-fr $(GEN_SFF) \
-		-l fgen_z.log
-	
-	cd $(RUN_DIR); \
-	fault_report -out $(OUT_RPT)
+zoix/compile:        export ROOT_DIR = $(CURDIR)
+zoix/compile-timing: export ROOT_DIR = $(CURDIR)
+zoix/compile:        RUN_DIR = $(CURDIR)/run/zoix
+zoix/compile-timing: RUN_DIR = $(CURDIR)/run/zoix_timing
 
-zoix/fgen/saf: GEN_SFF = $(CURDIR)/zoix/gen_saf_cv32e40p_top.sff
-zoix/fgen/saf: OUT_RPT = $(RUN_DIR)/cv32e40p_top_saf.rpt
-
-zoix/fgen/saf: .zoix-fgen
-
-zoix/fgen/tdf: GEN_SFF = $(CURDIR)/zoix/gen_tdf_cv32e40p_top.sff
-zoix/fgen/tdf: OUT_RPT = $(RUN_DIR)/cv32e40p_top_tdf.rpt
-
-zoix/fgen/tdf: .zoix-fgen
-
-
-zoix/fgen/sdd: export GSF_CSV = $(GATE_DIR)/cv32e40p_top.gsf.csv
-zoix/fgen/sdd: export TDF_RPT = $(RUN_DIR)/cv32e40p_top_tdf.rpt
-zoix/fgen/sdd: export SDD_RPT = $(RUN_DIR)/cv32e40p_top_sdd_K$(K).rpt
-zoix/fgen/sdd: export TOPLEVEL = $(TOP_LEVEL)
-zoix/fgen/sdd: export CLK_NS = $(TB_CLK_NS)
-
-zoix/fgen/sdd: zoix/fgen/tdf $(GATE_DIR)/cv32e40p_top.gsf.csv $(CURDIR)/run/zoix
-ifeq ($(K),0)
-	@printf "\033[31mYou must provide a K multiplier! Usage: make zoix/fgen/sdd K=your_float_K\033[39m\n"
-	@exit 1
-endif 
-	cd $(RUN_DIR); $(PYTHON) $(CURDIR)/gen_sdd_flist.py $(K)
-
-
-zoix/compile/%: export ROOT_DIR = $(CURDIR)
-
-zoix/compile/functional: $(CURDIR)/run/zoix
+zoix/compile: $(CURDIR)/run/zoix
 	cd $(RUN_DIR); \
 	$(ZOIX) -w \
 		-v $(TECHLIB_DIR)/NangateOpenCellLibrary.v \
@@ -283,7 +260,7 @@ zoix/compile/functional: $(CURDIR)/run/zoix
 		+verbose+undriven \
 		-l zoix_compile.log
 
-zoix/compile/timing: $(CURDIR)/run/zoix
+zoix/compile-timing: $(CURDIR)/run/zoix_timing
 	cd $(RUN_DIR);         \
 	$(ZOIX) -w \
 		-v $(TECHLIB_DIR)/NangateOpenCellLibrary.v \
@@ -302,6 +279,47 @@ zoix/compile/timing: $(CURDIR)/run/zoix
 		+verbose+undriven \
 		-l zoix_compile.log
 
+
+.zoix-fgen: $(CURDIR)/run/zoix
+	cd $(RUN_DIR); \
+	fr2fdef \
+		+format+standard +verbose +warnreturn+0 +nocollapse \
+		+dut+$(TOP_LEVEL) \
+		-fr $(GEN_SFF) \
+		-l fgen_z.log
+	
+	cd $(RUN_DIR); \
+	fault_report -out $(OUT_RPT)
+
+zoix/fgen/saf: RUN_DIR = $(CURDIR)/run/zoix
+zoix/fgen/saf: GEN_SFF = $(CURDIR)/zoix/gen_saf_cv32e40p_top.sff
+zoix/fgen/saf: OUT_RPT = $(RUN_DIR)/cv32e40p_top_saf.rpt
+
+zoix/fgen/saf: zoix/clean zoix/compile .zoix-fgen
+
+zoix/fgen/tdf: RUN_DIR = $(CURDIR)/run/zoix
+zoix/fgen/tdf: GEN_SFF = $(CURDIR)/zoix/gen_tdf_cv32e40p_top.sff
+zoix/fgen/tdf: OUT_RPT = $(RUN_DIR)/cv32e40p_top_tdf.rpt
+
+zoix/fgen/tdf: zoix/clean zoix/compile .zoix-fgen
+
+zoix/fgen/sdd: RUN_DIR = $(CURDIR)/run/zoix_timing
+zoix/fgen/sdd: export GSF_CSV = $(GATE_DIR)/cv32e40p_top.gsf.csv
+zoix/fgen/sdd: export TDF_RPT = $(RUN_DIR)/../zoix/cv32e40p_top_tdf.rpt
+zoix/fgen/sdd: export SDD_RPT = $(RUN_DIR)/cv32e40p_top_sdd_K$(K).rpt
+zoix/fgen/sdd: export TOPLEVEL = $(TOP_LEVEL)
+zoix/fgen/sdd: export CLK_NS = $(TB_CLK_NS)
+
+zoix/fgen/sdd: zoix/clean-timing zoix/compile-timing zoix/fgen/tdf $(GATE_DIR)/cv32e40p_top.gsf.csv $(CURDIR)/run/zoix
+ifeq ($(K),0)
+	@printf "\033[31mYou must provide a K multiplier! Usage: make zoix/fgen/sdd K=your_float_K\033[39m\n"
+	@exit 1
+endif 
+	cd $(RUN_DIR); $(PYTHON) $(CURDIR)/gen_sdd_flist.py $(K)
+
+zoix/lsim:        RUN_DIR = $(CURDIR)/run/zoix
+zoix/lsim-timing: RUN_DIR = $(CURDIR)/run/zoix_timing
+
 zoix/lsim: $(CURDIR)/run/zoix
 	cd $(RUN_DIR); \
 	./zoix.sim \
@@ -311,10 +329,21 @@ zoix/lsim: $(CURDIR)/run/zoix
 		+vcd+verify \
 		-l zoix_logic_sim.log 
 
+zoix/lsim-timing: $(CURDIR)/run/zoix_timing
+	cd $(RUN_DIR); \
+	./zoix.sim \
+		+vcd+file+"$(EVCD)" \
+		+vcd+dut+$(TOP_LEVEL)+$(EVCD_TOP) \
+		+vcd+verbose \
+		+vcd+verify \
+		-l zoix_logic_sim.log 
 
-zoix/fsim: export ROOT_DIR = $(CURDIR)
-zoix/fsim: export VCD = $(EVCD)
-zoix/fsim: export FAULT_LIST = $(CURDIR)/$(FAULT_LIST)
+zoix/fsim:        export ROOT_DIR = $(CURDIR)
+zoix/fsim-timing: export ROOT_DIR = $(CURDIR)
+zoix/fsim:        export VCD = $(EVCD)
+zoix/fsim-timing: export VCD = $(EVCD)
+zoix/fsim:        RUN_DIR = $(CURDIR)/run/zoix
+zoix/fsim-timing: RUN_DIR = $(CURDIR)/run/zoix_timing
 
 zoix/fsim: $(CURDIR)/run/zoix
 ifeq ($(FAULT_LIST),0)
@@ -322,10 +351,26 @@ ifeq ($(FAULT_LIST),0)
 	@exit 1
 endif 
 	cd $(RUN_DIR); \
+	export FAULT_LIST=$(CURDIR)/$(FAULT_LIST); \
 	fmsh -load $(CURDIR)/zoix/fsim_evcd.fmsh | tee zoix_fsim_evcd.log
 
+zoix/fsim-timing: $(CURDIR)/run/zoix_timing
+ifeq ($(FAULT_LIST),0)
+	@printf "\033[31mYou must provide a Fault List for fault simulation! Usage: make zoix/fsim  FAULT_LIST=path/to_your/fault_list\033[39m\n"
+	@exit 1
+endif 
+	cd $(RUN_DIR); \
+	export FAULT_LIST=$(CURDIR)/$(FAULT_LIST); \
+	fmsh -load $(CURDIR)/zoix/fsim_evcd.fmsh | tee zoix_fsim_evcd.log
+
+
+zoix/clean-all: zoix/clean zoix/clean-timing
+
 zoix/clean:
-	rm -vfr $(RUN_DIR)
+	rm -vfr $(CURDIR)/run/zoix
+
+zoix/clean-timing:
+	rm -vfr $(CURDIR)/run/zoix_timing
 
 clean: 
 	rm -vfr $(CURDIR)/run/*
