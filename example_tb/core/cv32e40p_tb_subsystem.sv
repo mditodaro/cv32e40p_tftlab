@@ -70,9 +70,6 @@ module cv32e40p_tb_subsystem #(
   assign debug_req_i = 1'b0;
 
   // instantiate the core
-`ifdef GATE_LEVEL_TOP
-  `GATE_LEVEL_TOP top_i (
-`else
   cv32e40p_top #(
       .PULP_XPULP      (PULP_XPULP),
       .PULP_CLUSTER    (PULP_CLUSTER),
@@ -82,7 +79,6 @@ module cv32e40p_tb_subsystem #(
       .ZFINX           (ZFINX),
       .NUM_MHPMCOUNTERS(NUM_MHPMCOUNTERS)
   ) top_i (
-`endif
       .clk_i (clk_i),
       .rst_ni(rst_ni),
 
