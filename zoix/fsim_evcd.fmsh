@@ -10,13 +10,13 @@ set(var=[fsim],hyperfault=[0])
 
 design()
 
-addtst(test=[cv32e40p_top], 
+addtst(test=[sbst], 
 stimtype=[vcd],
 stim=[$VCD],
-dut.stim=[cv32e40p_top_COREV_PULP0_COREV_CLUSTER0_FPU0_FPU_ADDMUL_LAT0_FPU_OTHERS_LAT0_ZFINX0_NUM_MHPMCOUNTERS1, tb_top.wrapper_i.top_i], 
-stim_options=[+TESTNAME=cv32e40p_top])
+dut.stim=[cv32e40p_top, tb_top.wrapper_i.top_i], 
+stim_options=[+TESTNAME=sbst])
 
 fsim()
 
-coverage(file=[OUTPUT_FAULT_LIST.sff])
-coverage(file=[OUTPUT_FAULT_LIST_HIER.sff],hierarchical=[4])
+coverage(file=[$FAULT_LIST.fsim])
+coverage(file=[$FAULT_LIST.hier], hierarchical=[0],faultlimit=[100])

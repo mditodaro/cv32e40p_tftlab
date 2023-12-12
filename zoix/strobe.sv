@@ -3,7 +3,7 @@
 `timescale 1ps / 1ps
 
 `ifndef TOPLEVEL
-	`define TOPLEVEL cv32e40p_top_COREV_PULP0_COREV_CLUSTER0_FPU0_FPU_ADDMUL_LAT0_FPU_OTHERS_LAT0_ZFINX0_NUM_MHPMCOUNTERS1
+	`define TOPLEVEL cv32e40p_top
 `endif
 
 module strobe;

@@ -18,14 +18,13 @@ if { $env(RUN_GUI) == 1 } {
 	if { $env(RUN_GATE) == 1 } {
 		source $env(TB_DIR)/waves_gate.tcl
 	} {
-		#log -r *
 		source $env(TB_DIR)/software.tcl
 		source $env(TB_DIR)/waves.tcl
 	}
 }
 
 if { $env(RUN_GATE) == 1 } {
-	vcd dumpports -file dumpports_gate.evcd sim:/tb_top/wrapper_i/top_i/*
+	vcd dumpports -file cv32e40p_top.evcd sim:/tb_top/wrapper_i/top_i/*
 }
 
 run -all
