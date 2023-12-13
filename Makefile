@@ -81,7 +81,7 @@ help::
 	@printf "\033[31m\tzoix/compile-timing\033[39m Compiles sources for Z01X usage with delay information (.sdf).\n"
 	@printf "\033[31m\tzoix/fgen/tdf\033[39m Generates TDF fault list in SFF for Z01X.\n"
 	@printf "\033[31m\tzoix/fgen/saf\033[39m Generates SAF fault list in SFF for Z01X.\n"
-	@printf "\033[31m\tzoix/fgen/sdd K=...\033[39m Generates SDD (Small Delay Defects) fault list in SFF for Z01X for a delay multiplier K (float)\n"
+	@printf "\033[31m\tzoix/fgen/sdd SDD_CONFIG="..."\033[39m Generates SDD (Small Delay Defects) fault list in SFF for Z01X.\n\t\033[0;33mUsage: zoix/fgen/sdd SDD_CONFIG=\"-K|-S <float> [-l <float>]\" (\" \" are needed!!!)\n"
 	@printf "\033[31m\tzoix/lsim\033[39m Logic simulation to validate eVCD stimuli.\n"
 	@printf "\033[31m\tzoix/lsim-timing\033[39m Logic simulation with timing annotations to validate eVCD stimuli.\n"
 	@printf "\033[31m\tzoix/fsim FAULT_LIST=...\033[39m Fault simulation of CV32E40P for FAULT_LIST.\n"
@@ -328,18 +328,18 @@ zoix/fgen/tdf: $(CURDIR)/run/zoix/zoix.sim .zoix-fgen
 zoix/fgen/sdd: RUN_DIR = $(CURDIR)/run/zoix_timing
 zoix/fgen/sdd: export GSF_CSV = $(GATE_DIR)/cv32e40p_top.gsf.csv
 zoix/fgen/sdd: export TDF_RPT = $(RUN_DIR)/../zoix/cv32e40p_top_tdf.rpt
-zoix/fgen/sdd: export SDD_RPT = $(RUN_DIR)/cv32e40p_top_sdd_K$(K).rpt
+zoix/fgen/sdd: export SDD_RPT = $(RUN_DIR)/cv32e40p_top_sdd_$(shell echo $(SDD_CONFIG) | grep -Po "(?<=-)[K|S|l]\s[0-9]+" | tr -d [:space:]).rpt
 zoix/fgen/sdd: export TOPLEVEL = $(TOP_LEVEL)
 zoix/fgen/sdd: export CLK_NS = $(TB_CLK_NS)
 
 zoix/fgen/sdd: $(CURDIR)/run/zoix_timing/zoix.sim zoix/fgen/tdf $(GATE_DIR)/cv32e40p_top.gsf.csv
 
-ifndef K
-	@printf "\033[31mYou must provide a K multiplier! Usage: make zoix/fgen/sdd K=your_float_K\033[39m\n"
+ifndef SDD_CONFIG
+	@printf "\033[0;33mUsage: zoix/fgen/sdd SDD_CONFIG=\"-K|-S <float> [-l <float>]\" (\" \" are needed!!!)\n\033[39m\n"
 	@exit 1
 endif 
 	cd $(RUN_DIR) && \
-	$(PYTHON) $(CURDIR)/gen_sdd_flist.py $(K)
+	$(PYTHON) $(CURDIR)/gen_sdd_flist.py $(SDD_CONFIG)
 
 .zoix-lsim: $(EVCD)
 
