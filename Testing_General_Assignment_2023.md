@@ -61,7 +61,9 @@ If for instance the code resorts to an endless loop in the shell (nogui) version
 
 With you having finalized during your analysis the faults you intend to target you can now proceed to generate the SDD fault list in standard synposys format (sff) for the fault simulation. The SDD fault list is generated in accordance with the GSF slack file that has been produced in PrimeTime. The GSF contains for each port and pin of the design the maximum slack. Hence, in compliance to this each port must be assigned a delay value. This value, assuming an arbitrary port **A** and its **slow-to-rise (STR)** fault is calculated as: 
 
-$\text{delay}_A^{STR} = (\text{clock\_period}_{core} - \text{max\_slack}^{STR}_A) \times K $  
+```math
+\text{delay}_A^{STR} = (\text{clock\_period}_{core} - \text{max\_slack}^{STR}_A) \times K
+```  
 
 The same obviously holds for its counterpart slow-to-fall (STF). This fault list is generated with an in-house `python3` script that we have provided to you for your convenience.
 
