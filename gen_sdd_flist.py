@@ -30,7 +30,7 @@ TB_CLK_NS = float(os.environ['TB_CLK_NS'])
 SYN_CLK_NS = float(os.environ['SYN_CLK_NS'])
 #####################################
 
-print(f'{K=} {S=} {M=} {TB_CLK_NS=} {SYN_CLK_NS=}')
+print(f'K={K} S={S} M={M} TB_CLK_NS={TB_CLK_NS} SYN_CLK_NS={SYN_CLK_NS}')
 
 # Save TDF faults into a list (will be used to filted the GSF)
 tdf_list = []
