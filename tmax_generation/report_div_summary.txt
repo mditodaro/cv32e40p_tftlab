@@ -1,0 +1,29 @@
+   Uncollapsed Transition Fault Summary Report
+ -----------------------------------------------
+ fault class                     code   #faults
+ ------------------------------  ----  ---------
+ Detected                         DT       4801
+   detected_by_simulation         DS      (4801)
+ Possibly detected                PT          0
+ Undetectable                     UD          2
+   undetectable-tied              UT         (2)
+ ATPG untestable                  AU        113
+   atpg_untestable-not_detected   AN       (113)
+ Not detected                     ND        352
+   not-controlled                 NC        (84)
+   not-observed                   NO       (268)
+ -----------------------------------------------
+ total faults                              5268
+ test coverage                            91.17%
+ fault coverage                           91.14%
+ -----------------------------------------------
+            Pattern Summary Report
+ -----------------------------------------------
+ #internal patterns                         279
+     #full_sequential patterns              279
+ -----------------------------------------------
+            CPU Usage Summary Report
+ -----------------------------------------------
+ Total CPU time                         7493.39
+ -----------------------------------------------
+

@@ -1,0 +1,17 @@
+make pt/generate_gsf 
+make questa/compile
+make compile_sbst 
+make questa/lsim/gate/shell 
+make zoix/fgen/sdd K=1.4
+make zoix/lsim-timing
+make zoix/fsim-timing FAULT_LIST=path_rpt_file
+
+
+make questa/compile-timing
+make compile_sbst
+make questa/lsim/gate-timing/shell
+make zoix/compile
+make zoix/compile-timing
+make zoix/fgen/sdd K=
+make zoix/lsim-timing
+make zoix/fsim-timing FAULT_LIST=path

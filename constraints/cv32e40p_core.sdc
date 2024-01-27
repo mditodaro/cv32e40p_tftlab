@@ -238,8 +238,8 @@ create_clock \
 
 set all_clock_ports $clock_ports
 
-set all_other_input_ports  [remove_from_collection [all_inputs]  [list {*}$all_clock_ports {*}$obi_input_ports {*}$irq_input_ports {*}$early_input_ports]]
-set all_other_output_ports [remove_from_collection [all_outputs] [list {*}$all_clock_ports {*}$obi_output_ports {*}$sleep_output_ports {*}$irq_output_ports]]
+#set all_other_input_ports  [remove_from_collection [all_inputs]  [list {*}$all_clock_ports {*}$obi_input_ports {*}$irq_input_ports {*}$early_input_ports]]
+#set all_other_output_ports [remove_from_collection [all_outputs] [list {*}$all_clock_ports {*}$obi_output_ports {*}$sleep_output_ports {*}$irq_output_ports]]
 
 # IRQs
 set_input_delay  $in_delay_irq          [get_ports $irq_input_ports        ] -clock clk_i
@@ -265,7 +265,7 @@ set_output_delay $out_delay_data_wdata  [ get_ports data_wdata_o*          ] -cl
 
 # Misc
 set_input_delay  $in_delay_early        [get_ports $early_input_ports      ] -clock clk_i
-set_input_delay  $in_delay_other        [get_ports $all_other_input_ports  ] -clock clk_i
+#set_input_delay  $in_delay_other        [get_ports $all_other_input_ports  ] -clock clk_i
 
-set_output_delay $out_delay_other       [get_ports $all_other_output_ports ] -clock clk_i
+#set_output_delay $out_delay_other       [get_ports $all_other_output_ports ] -clock clk_i
 set_output_delay $out_delay_core_sleep  [ get_ports core_sleep_o           ] -clock clk_i
