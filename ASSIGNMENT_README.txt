@@ -13,6 +13,11 @@ This is a README file containing a brief summary of the file that were created f
     in the test/ subfolder we added a .S file for each different test that we executed;
     The main.c file wasd changed accordingly and used to select end run the desired test
 
+/tmax_generation
+    This folder includes the script for the ATPG generation from tmax and the relative reports. 
+    The script takes as input the netlist of the divider. The output of the synthesis 
+    process is not present with this delivery for space reasons.
+
 In the root directory there also other useful files:
 
 -execute_basic.sh
