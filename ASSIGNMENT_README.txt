@@ -1,7 +1,7 @@
-This is a README file containing a brief summary of the file that weere created for the assignment
+This is a README file containing a brief summary of the file that were created for the assignment
 
 /commands
-    This folder contains both the csv file containing all the path, as well with the script to select them; 
+    This folder contains both the csv file containing all the path, as well as the script to select them; 
     the command.txt file is a brief summary of the most used make command
 
 /elaborate
